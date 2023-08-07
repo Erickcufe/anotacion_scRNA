@@ -120,8 +120,9 @@ so@meta.data$cluster_id <- Idents(so)
 ```
 
 
-# Observar los marcadores 
+## Observar los marcadores {.scrollable}
 
+Y de este modo se va dando una identidad a cada cluster.
 
 ```{r, eval=FALSE, echo=TRUE}
 
@@ -146,5 +147,13 @@ so.renamed <- RenameIdents(dummy_neuron, `0` = "Ex", `1` = "Ex", `2` = "Pv",
                            `19` = "RORB+", `20` = "Ex", `21` = "Ex")
 
 ```
+
+## Enfoque automatico: a partir de un dataset de referencia {.scrollable} 
+
+SingleR
+
+
+## Enfoque mixto {.scrollable}
+
 
 
