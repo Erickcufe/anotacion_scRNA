@@ -53,5 +53,31 @@ La mejor estrategia para anotar, es entender el problema.
 
 ![](img/h_sabio.jpg)
 
+## Antes de seguir, tip para aprovechar lo mejor de dos mundos SingleCellExperiment y Seurat {.scrollable}
 
+**De Seurat a SingleCellExperiment**
+
+```{r, eval=FALSE, echo=TRUE}
+library(SingleCellExperiment)
+
+so # Seurat Object
+
+sce <- as.SingleCellExperiment(so, assay = "RNA")
+colData(sce) <- as.data.frame(colData(sce)) %>%
+  mutate_if(is.character, as.factor) %>%
+  DataFrame(row.names = colnames(sce))
+```
+
+**De SingleCellExperiment a Seurat**
+
+```{r, eval=FALSE, echo=TRUE}
+library(SeuratObject)
+
+sce # SingleCellExperiment object
+
+so <- CreateSeuratObject(
+  counts = counts(sce),
+  meta.data = data.frame(colData(sce)),
+  project = "Nombre_del_proyecto")
+```
 
