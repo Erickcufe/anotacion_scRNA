@@ -63,8 +63,8 @@ library(SingleCellExperiment)
 so # Seurat Object
 
 sce <- as.SingleCellExperiment(so, assay = "RNA")
-colData(sce) <- as.data.frame(colData(sce)) %>%
-  mutate_if(is.character, as.factor) %>%
+colData(sce) <- as.data.frame(colData(sce)) |>
+  mutate_if(is.character, as.factor) |>
   DataFrame(row.names = colnames(sce))
 ```
 
@@ -80,4 +80,32 @@ so <- CreateSeuratObject(
   meta.data = data.frame(colData(sce)),
   project = "Nombre_del_proyecto")
 ```
+
+## Aproximación "artesanal" {.scrollable}
+
+El dataset listo para lo que sigue lo puedes descargar desde el siguiente link: [https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link](https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link)
+
+**Primer paso cargar los datos ya pre procesados**
+
+```{r, eval=FALSE, echo=TRUE}
+library(Seurat)
+library(dplyr)
+
+
+# Recuerda descargar primero el dataset del link
+so <- readRDS("alsaigh_part2.rds")
+
+#Definimos la resolucion/ numero de clusters 
+cluster_cols <- grep("res.[0-9]", colnames(colData(sce)), value = TRUE)
+sapply(colData(sce)[cluster_cols], nlevels)
+
+so <- SetIdent(so, value = "integrated_snn_res.0.1")
+so@meta.data$cluster_id <- Idents(so)
+
+# Aqui podemos ver la cantidad de clusters por resolución
+(n_cells <- table(so$cluster_id, so$sample_id))
+
+```
+
+
 
