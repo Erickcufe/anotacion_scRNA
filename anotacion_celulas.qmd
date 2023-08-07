@@ -28,11 +28,14 @@ Presenta: Erick Cuevas Fernández
 
 ## Anotación de clusters
 
+::: {.incremental}
+
 1.  **Identificación de tipos y Subtipos Celulares.**
 2.  **Entender la función celular.**
 3.  **Descubrimiento de nuevos tipos celulares.**
 4.  **Base para análisis posteriores.**
-5.  **Comparación entre muestras y condiciones.**
+
+:::
 
 ![](img/fruit.png)
 
@@ -41,4 +44,14 @@ Presenta: Erick Cuevas Fernández
 Lisa Maria Steinheuer et al., 2021
 
 :::
+
+## Conjunto de datos a trabajar
+
+[Tom Alsaigh et al. 2022](https://www.nature.com/articles/s42003-022-04056-7)
+
+La mejor estrategia para anotar, es entender el problema. 
+
+![](img/h_sabio.jpg)
+
+
 
