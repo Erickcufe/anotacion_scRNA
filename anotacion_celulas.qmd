@@ -105,7 +105,46 @@ so@meta.data$cluster_id <- Idents(so)
 # Aqui podemos ver la cantidad de clusters por resolución
 (n_cells <- table(so$cluster_id, so$sample_id))
 
+# A partir de este paso podemos encontrar los genes mas variables de cada cluster para poder anotarlos a partir de ese método
+
+# f.markers <- FindAllMarkers(so.renamed, min.pct = 0.25, logfc.threshold = 0.25)
+
+# f.markers %>%
+#   group_by(cluster) %>%
+#   top_n(n = 10, wt = avg_log2FC) -> top10
+
+# DoHeatmap(so, features = top10$gene) +
+#   theme(text = element_text(size = 18))
+
+
 ```
 
+
+# Observar los marcadores 
+
+
+```{r, eval=FALSE, echo=TRUE}
+
+DimPlot(so, reduction = "umap") + theme(aspect.ratio = 1)
+
+# Marcadores de tipos celulares
+macrophague_markers <- c("APOE","APOC1", "FABP5", "FABP4")
+
+endothelial_markers <- c("ITLN1","S100A4","MGP","FN1")
+
+FeaturePlot(so, features = macrophague_markers, reduction = "umap",
+            cols = c("#EBE6E5","#EA0C3E"), label.size = 26, pt.size = 1)
+
+
+# Checar el numero de clusters 
+so.renamed <- RenameIdents(dummy_neuron, `0` = "Ex", `1` = "Ex", `2` = "Pv",
+                           `3` = "RORB+", `4` = "Vip", `5`= "Sst",
+                           `6` = "RORB+", `7`= "RORB+", `8`= "Vip", `9`= "Ex",
+                           `10`= "Non-Vip", `11`= "Ex", `12`= "Ex",
+                           `13`= "CPNs", `14`= "Non-Vip", `15`= "Pv",
+                           `16`= "Non-Vip", `17`= "Non-Vip", `18`= "CPNs",
+                           `19` = "RORB+", `20` = "Ex", `21` = "Ex")
+
+```
 
 
