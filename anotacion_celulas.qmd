@@ -155,5 +155,5 @@ SingleR
 
 ## Enfoque mixto {.scrollable}
 
-
+Aqui poner el ejemplo de usar marcadores conocidos y un dataset de referencia, y al mismo tiempo eliminar clusters que no nos interesen.
 
