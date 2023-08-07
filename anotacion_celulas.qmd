@@ -13,43 +13,38 @@ editor: visual
 
 Presenta: Erick Cuevas Fernández
 
-![](img/xolo.png){.absolute bottom=0 right=0 width="300" height="300"}
+![](img/xolo.png){.absolute bottom="0" right="0" width="300" height="300"}
 
-![](img/bioconductor.png){.absolute bottom=0 left=0 width="300" height="100"}
+![](img/bioconductor.png){.absolute bottom="0" left="0" width="300" height="100"}
 
-![](img/nnb.png){.absolute bottom=0 left=400 width="300" height="100"}
+![](img/nnb.png){.absolute bottom="0" left="400" width="300" height="100"}
 
-![](img/rmb.png){.absolute top=400 left=400 width="300" height="100"}
+![](img/rmb.png){.absolute top="400" left="400" width="300" height="100"}
 
-![](img/avatar.png){.absolute top=400 left=0 width="100" height="100"}
+![](img/avatar.png){.absolute top="400" left="0" width="100" height="100"}
 
-
-![](img/ccg.png){.absolute top=400 left=200 width="80" height="80"}
+![](img/ccg.png){.absolute top="400" left="200" width="80" height="80"}
 
 ## Anotación de clusters
 
-::: {.incremental}
-
+::: incremental
 1.  **Identificación de tipos y Subtipos Celulares.**
 2.  **Entender la función celular.**
 3.  **Descubrimiento de nuevos tipos celulares.**
 4.  **Base para análisis posteriores.**
-
 :::
 
 ![](img/fruit.png)
 
 ::: footer
-
 Lisa Maria Steinheuer et al., 2021
-
 :::
 
 ## Conjunto de datos a trabajar
 
 [Tom Alsaigh et al. 2022](https://www.nature.com/articles/s42003-022-04056-7)
 
-La mejor estrategia para anotar, es entender el problema. 
+La mejor estrategia para anotar, es entender el problema.
 
 ![](img/h_sabio.jpg)
 
@@ -83,21 +78,22 @@ so <- CreateSeuratObject(
 
 ## Aproximación "artesanal" {.scrollable}
 
-El dataset listo para lo que sigue lo puedes descargar desde el siguiente link: [https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link](https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link)
+El dataset listo para lo que sigue lo puedes descargar desde el siguiente link: <https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link>
 
 **Primer paso cargar los datos ya pre procesados**
 
 ```{r, eval=FALSE, echo=TRUE}
 library(Seurat)
 library(dplyr)
+library(SingleCellExperiment)
 
 
 # Recuerda descargar primero el dataset del link
 so <- readRDS("alsaigh_part2.rds")
 
 #Definimos la resolucion/ numero de clusters 
-cluster_cols <- grep("res.[0-9]", colnames(colData(sce)), value = TRUE)
-sapply(colData(sce)[cluster_cols], nlevels)
+# cluster_cols <- grep("res.[0-9]", colnames(colData(sce)), value = TRUE)
+# sapply(colData(sce)[cluster_cols], nlevels)
 
 so <- SetIdent(so, value = "integrated_snn_res.0.1")
 so@meta.data$cluster_id <- Idents(so)
@@ -118,7 +114,6 @@ so@meta.data$cluster_id <- Idents(so)
 
 
 ```
-
 
 ## Observar los marcadores {.scrollable}
 
@@ -148,12 +143,10 @@ so.renamed <- RenameIdents(dummy_neuron, `0` = "Ex", `1` = "Ex", `2` = "Pv",
 
 ```
 
-## Enfoque automatico: a partir de un dataset de referencia {.scrollable} 
+## Enfoque automatico: a partir de un dataset de referencia {.scrollable}
 
 SingleR
-
 
 ## Enfoque mixto {.scrollable}
 
 Aqui poner el ejemplo de usar marcadores conocidos y un dataset de referencia, y al mismo tiempo eliminar clusters que no nos interesen.
-
