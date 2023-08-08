@@ -40,6 +40,21 @@ emo::ji("eye")
 4.  **Base para análisis posteriores.**
 :::
 
+## Aproximaciones generales para anotar
+
+::: incremental
+
+1. Modo artístico
+2. Usando datasets de referencia. Automático.
+3. Combinacion de 1 y 2.
+
+::: {.fragment .highlight-red}
+4. Anclas con Seurat
+
+:::
+
+:::
+
 ## El problema
 
 ![](img/at.jpg)
@@ -172,7 +187,6 @@ pred <- SingleR(test = sce,
                 ref = ref.data,
                 labels = ref.data$label.main,
                 assay.type.test=1)
-
 ```
 
 ## Usando SingleR {.scrollable auto-animate="true"}
@@ -188,7 +202,6 @@ pred <- SingleR(test = sce,
                 BPPARAM= BiocParallel::MulticoreParam(6)) # 6 CPUs.
 
 table(pred$labels)
-
 ```
 
 Parámetros Principales:
