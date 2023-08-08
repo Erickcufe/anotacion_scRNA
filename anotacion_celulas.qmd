@@ -401,11 +401,12 @@ f.markers <- FindAllMarkers(so,
 
 f.markers %>%
   group_by(cluster) %>%
-  top_n(n = 5, wt = avg_log2FC) -> top5
+  top_n(n = 10, wt = avg_log2FC) -> top10
 
 #so <- ScaleData(so)
 
-DoHeatmap(so, features = top5$gene)
+
+DoHeatmap(so, features = top10$gene)
 
 ```
 
@@ -417,7 +418,7 @@ DoHeatmap(so, features = top5$gene)
 
 ## ¿Tiene sentido?
 
-![](img/heatmap_final.png)
+![](img/heatmap_final.jpeg)
 
 ## Lo que sigue...
 
