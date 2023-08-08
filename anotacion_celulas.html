@@ -666,32 +666,110 @@
 <h2>Observar los marcadores</h2>
 <p>Y de este modo se va dando una identidad a cada cluster.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"umap"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># Marcadores de tipos celulares</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>macrophague_markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"APOE"</span>,<span class="st">"APOC1"</span>, <span class="st">"FABP5"</span>, <span class="st">"FABP4"</span>)</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Marcadores ya reportados para celulas espumosas</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co"># so &lt;- readRDS( "alsaigh_PC20_part3.rds")</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a>foamy_cells <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"FABP5"</span>, <span class="st">"GPNMB"</span>, <span class="st">"TREM2"</span>, <span class="st">"APOC1"</span>, <span class="st">"CD9"</span>, <span class="st">"SPP1"</span>)</span>
 <span id="cb12-5"><a href="#cb12-5"></a></span>
-<span id="cb12-6"><a href="#cb12-6"></a>endothelial_markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ITLN1"</span>,<span class="st">"S100A4"</span>,<span class="st">"MGP"</span>,<span class="st">"FN1"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="co"># so &lt;- ScaleData(so, display.progress = FALSE)</span></span>
 <span id="cb12-7"><a href="#cb12-7"></a></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="fu">FeaturePlot</span>(so, <span class="at">features =</span> macrophague_markers, <span class="at">reduction =</span> <span class="st">"umap"</span>,</span>
-<span id="cb12-9"><a href="#cb12-9"></a>            <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"#EBE6E5"</span>,<span class="st">"#EA0C3E"</span>), <span class="at">label.size =</span> <span class="dv">26</span>, <span class="at">pt.size =</span> <span class="dv">1</span>)</span>
-<span id="cb12-10"><a href="#cb12-10"></a></span>
-<span id="cb12-11"><a href="#cb12-11"></a></span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="co"># Checar el numero de clusters </span></span>
-<span id="cb12-13"><a href="#cb12-13"></a>so.renamed <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(dummy_neuron, <span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Ex"</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Ex"</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Pv"</span>,</span>
-<span id="cb12-14"><a href="#cb12-14"></a>                           <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"RORB+"</span>, <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Vip"</span>, <span class="st">`</span><span class="at">5</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Sst"</span>,</span>
-<span id="cb12-15"><a href="#cb12-15"></a>                           <span class="st">`</span><span class="at">6</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"RORB+"</span>, <span class="st">`</span><span class="at">7</span><span class="st">`</span><span class="ot">=</span> <span class="st">"RORB+"</span>, <span class="st">`</span><span class="at">8</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Vip"</span>, <span class="st">`</span><span class="at">9</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Ex"</span>,</span>
-<span id="cb12-16"><a href="#cb12-16"></a>                           <span class="st">`</span><span class="at">10</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Non-Vip"</span>, <span class="st">`</span><span class="at">11</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Ex"</span>, <span class="st">`</span><span class="at">12</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Ex"</span>,</span>
-<span id="cb12-17"><a href="#cb12-17"></a>                           <span class="st">`</span><span class="at">13</span><span class="st">`</span><span class="ot">=</span> <span class="st">"CPNs"</span>, <span class="st">`</span><span class="at">14</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Non-Vip"</span>, <span class="st">`</span><span class="at">15</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Pv"</span>,</span>
-<span id="cb12-18"><a href="#cb12-18"></a>                           <span class="st">`</span><span class="at">16</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Non-Vip"</span>, <span class="st">`</span><span class="at">17</span><span class="st">`</span><span class="ot">=</span> <span class="st">"Non-Vip"</span>, <span class="st">`</span><span class="at">18</span><span class="st">`</span><span class="ot">=</span> <span class="st">"CPNs"</span>,</span>
-<span id="cb12-19"><a href="#cb12-19"></a>                           <span class="st">`</span><span class="at">19</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"RORB+"</span>, <span class="st">`</span><span class="at">20</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Ex"</span>, <span class="st">`</span><span class="at">21</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Ex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-8"><a href="#cb12-8"></a>cell_typeA_marker_gene_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"FABP5"</span>, <span class="st">"GPNMB"</span>, <span class="st">"TREM2"</span>, <span class="st">"APOC1"</span>, <span class="st">"CD9"</span>, <span class="st">"SPP1"</span>))</span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="fu">DefaultAssay</span>(so) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>so <span class="ot">&lt;-</span> <span class="fu">AddModuleScore</span>(<span class="at">object =</span> so,</span>
+<span id="cb12-11"><a href="#cb12-11"></a>                     <span class="at">features =</span> cell_typeA_marker_gene_list,</span>
+<span id="cb12-12"><a href="#cb12-12"></a>                     <span class="co"># ctrl = 1,</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>                     <span class="at">name =</span> <span class="st">"espumosas"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14"></a></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="fu">FeaturePlot</span>(<span class="at">object =</span> so_new, <span class="at">features =</span> <span class="st">"espumosas1"</span>, <span class="at">reduction =</span> <span class="st">"tsne"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="enfoque-mixto" class="slide level2 scrollable">
-<h2>Enfoque mixto</h2>
-<p>Aqui poner el ejemplo de usar marcadores conocidos y un dataset de referencia, y al mismo tiempo eliminar clusters que no nos interesen.</p>
+<section id="observamos-la-expresion-en-conjunto" class="slide level2 scrollable">
+<h2>Observamos la expresion en conjunto</h2>
 
-<img src="img/cdsb.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<img data-src="img/modul.png" class="r-stretch"></section>
+<section id="cambiamos-el-nombre-de-nuestras-celulas" class="slide level2">
+<h2>Cambiamos el nombre de nuestras celulas</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>select_foamy <span class="ot">&lt;-</span> <span class="fu">colnames</span>(so)[so<span class="sc">$</span>espumosas1 <span class="sc">&gt;</span> <span class="fl">1.5</span>]</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a>new_cells <span class="ot">&lt;-</span> so<span class="sc">$</span>Proplabels</span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co"># Hacemos un loop para sustituir el nombre de las etiquetas</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">colnames</span>(so) <span class="sc">%in%</span> select_foamy)){</span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="cf">if</span>((<span class="fu">colnames</span>(so) <span class="sc">%in%</span> select_foamy)[i]){</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    new_cells[i] <span class="ot">&lt;-</span> <span class="st">"Foamy_cells"</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>  } <span class="cf">else</span>{</span>
+<span id="cb13-10"><a href="#cb13-10"></a>    new_cells[i] <span class="ot">&lt;-</span> so<span class="sc">$</span>Proplabels[i]</span>
+<span id="cb13-11"><a href="#cb13-11"></a>  }</span>
+<span id="cb13-12"><a href="#cb13-12"></a>}</span>
+<span id="cb13-13"><a href="#cb13-13"></a></span>
+<span id="cb13-14"><a href="#cb13-14"></a>so<span class="sc">$</span>new_cells <span class="ot">&lt;-</span> new_cells</span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="fu">Idents</span>(so) <span class="ot">&lt;-</span> so<span class="sc">$</span>new_cells</span>
+<span id="cb13-16"><a href="#cb13-16"></a></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"tsne"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="voalá" class="slide level2">
+<h2>Voalá</h2>
+
+<img data-src="img/last_cluster.png" class="r-stretch"></section>
+<section id="tiene-sentido" class="slide level2 scrollable">
+<h2>¿Tiene sentido?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>df_cells_cts <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">Idents</span>(so), so<span class="sc">$</span>region) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">colnames</span>(df_cells_cts) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"cell_type"</span>, <span class="st">"region"</span>, <span class="st">"freq"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a>df_cells_cts <span class="ot">&lt;-</span> df_cells_cts <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">group_by</span>(cell_type) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="fu">ggplot</span>(df_cells_cts, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> prop, <span class="at">fill =</span> region)) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cell Type"</span>,</span>
+<span id="cb14-12"><a href="#cb14-12"></a>       <span class="at">y =</span> <span class="st">"Proportion"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13"></a>       <span class="at">fill =</span> <span class="st">"Femoral Artery Plaque"</span>) <span class="sc">+</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb14-16"><a href="#cb14-16"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>))</span>
+<span id="cb14-17"><a href="#cb14-17"></a></span>
+<span id="cb14-18"><a href="#cb14-18"></a></span>
+<span id="cb14-19"><a href="#cb14-19"></a><span class="co"># Encontrar "nuevos" marcadores</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a><span class="co"># Cuidado con tu memoria RAM!</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a></span>
+<span id="cb14-22"><a href="#cb14-22"></a>f.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(so,</span>
+<span id="cb14-23"><a href="#cb14-23"></a>                            <span class="at">only.pos =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-24"><a href="#cb14-24"></a></span>
+<span id="cb14-25"><a href="#cb14-25"></a>f.markers <span class="sc">%&gt;%</span></span>
+<span id="cb14-26"><a href="#cb14-26"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb14-27"><a href="#cb14-27"></a>  <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">wt =</span> avg_log2FC) <span class="ot">-&gt;</span> top10</span>
+<span id="cb14-28"><a href="#cb14-28"></a></span>
+<span id="cb14-29"><a href="#cb14-29"></a><span class="co">#so &lt;- ScaleData(so)</span></span>
+<span id="cb14-30"><a href="#cb14-30"></a></span>
+<span id="cb14-31"><a href="#cb14-31"></a><span class="fu">DoHeatmap</span>(so, <span class="at">features =</span> top10<span class="sc">$</span>gene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tiene-sentido-1" class="slide level2">
+<h2>¿Tiene sentido?</h2>
+
+<img data-src="img/final_gra.png" class="r-stretch"></section>
+<section id="tiene-sentido-2" class="slide level2">
+<h2>¿Tiene sentido?</h2>
+
+<img data-src="img/heatmap_final.png" class="r-stretch"></section>
+<section id="lo-que-sigue" class="slide level2">
+<h2>Lo que sigue…</h2>
+<ol type="1">
+<li>Expresión diferencial: por condición, región, tejido, entre tipos celulares, sexo, etc.</li>
+<li>Análisis de trayectoria: monocle3.</li>
+</ol>
+</section>
+<section id="el-fin" class="slide level2">
+<h2>El fin</h2>
+<p><strong>MUCHAS GRACIAS</strong></p>
+<p><img data-src="img/xolo.png" class="absolute" style="bottom: 0px; right: 0px; "></p>
+<p><img src="img/cdsb.png" class="slide-logo"></p>
+<div class="footer footer-default">
 <p>EBM 2023</p>
 </div>
 </section>

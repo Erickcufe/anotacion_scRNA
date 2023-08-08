@@ -321,31 +321,114 @@ DimPlot(so, reduction = "tsne")
 Y de este modo se va dando una identidad a cada cluster.
 
 ```{r, eval=FALSE, echo=TRUE}
+# Marcadores ya reportados para celulas espumosas
+# so <- readRDS( "alsaigh_PC20_part3.rds")
 
-DimPlot(so, reduction = "umap") + theme(aspect.ratio = 1)
+foamy_cells <- c("FABP5", "GPNMB", "TREM2", "APOC1", "CD9", "SPP1")
 
-# Marcadores de tipos celulares
-macrophague_markers <- c("APOE","APOC1", "FABP5", "FABP4")
+# so <- ScaleData(so, display.progress = FALSE)
 
-endothelial_markers <- c("ITLN1","S100A4","MGP","FN1")
+cell_typeA_marker_gene_list <- list(c("FABP5", "GPNMB", "TREM2", "APOC1", "CD9", "SPP1"))
+DefaultAssay(so) <- "RNA"
+so <- AddModuleScore(object = so,
+                     features = cell_typeA_marker_gene_list,
+                     # ctrl = 1,
+                     name = "espumosas")
 
-FeaturePlot(so, features = macrophague_markers, reduction = "umap",
-            cols = c("#EBE6E5","#EA0C3E"), label.size = 26, pt.size = 1)
+FeaturePlot(object = so_new, features = "espumosas1", reduction = "tsne")
 
 
-# Checar el numero de clusters 
-so.renamed <- RenameIdents(dummy_neuron, `0` = "Ex", `1` = "Ex", `2` = "Pv",
-                           `3` = "RORB+", `4` = "Vip", `5`= "Sst",
-                           `6` = "RORB+", `7`= "RORB+", `8`= "Vip", `9`= "Ex",
-                           `10`= "Non-Vip", `11`= "Ex", `12`= "Ex",
-                           `13`= "CPNs", `14`= "Non-Vip", `15`= "Pv",
-                           `16`= "Non-Vip", `17`= "Non-Vip", `18`= "CPNs",
-                           `19` = "RORB+", `20` = "Ex", `21` = "Ex")
+```
+
+## Observamos la expresion en conjunto {.scrollable}
+
+![](img/modul.png)
+
+
+## Cambiamos el nombre de nuestras celulas
+
+```{r, eval=FALSE, echo=TRUE}
+select_foamy <- colnames(so)[so$espumosas1 > 1.5]
+
+new_cells <- so$Proplabels
+
+# Hacemos un loop para sustituir el nombre de las etiquetas
+for(i in 1:length(colnames(so) %in% select_foamy)){
+  if((colnames(so) %in% select_foamy)[i]){
+    new_cells[i] <- "Foamy_cells"
+  } else{
+    new_cells[i] <- so$Proplabels[i]
+  }
+}
+
+so$new_cells <- new_cells
+Idents(so) <- so$new_cells
+
+DimPlot(so, reduction = "tsne")
+```
+
+## Voalá
+
+![](img/last_cluster.png)
+
+## ¿Tiene sentido? {.scrollable}
+
+```{r, eval=FALSE, echo=TRUE}
+
+df_cells_cts <- table(Idents(so), so$region) %>% as.data.frame()
+colnames(df_cells_cts) <- c("cell_type", "region", "freq")
+
+df_cells_cts <- df_cells_cts %>%
+  group_by(cell_type) %>%
+  mutate(prop = freq / sum(freq))
+
+ggplot(df_cells_cts, aes(x = cell_type, y = prop, fill = region)) +
+  geom_bar(stat = "identity", position = position_dodge(), color = "black") +
+  theme_classic() +
+  labs(x = "Cell Type",
+       y = "Proportion",
+       fill = "Femoral Artery Plaque") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        text = element_text(size = 15))
+
+
+# Encontrar "nuevos" marcadores
+# Cuidado con tu memoria RAM!
+
+f.markers <- FindAllMarkers(so,
+                            only.pos = FALSE)
+
+f.markers %>%
+  group_by(cluster) %>%
+  top_n(n = 10, wt = avg_log2FC) -> top10
+
+#so <- ScaleData(so)
+
+DoHeatmap(so, features = top10$gene)
+
+
 
 ```
 
 
+## ¿Tiene sentido?
 
-## Enfoque mixto {.scrollable}
+![](img/final_gra.png)
 
-Aqui poner el ejemplo de usar marcadores conocidos y un dataset de referencia, y al mismo tiempo eliminar clusters que no nos interesen.
+
+## ¿Tiene sentido?
+
+![](img/heatmap_final.png)
+
+## Lo que sigue...
+
+1. Expresión diferencial: por condición, región, tejido, entre tipos celulares, sexo, etc.
+2. Análisis de trayectoria: monocle3.
+
+
+## El fin
+
+**MUCHAS GRACIAS**
+
+![](img/xolo.png){.absolute bottom="0" right="0"}
