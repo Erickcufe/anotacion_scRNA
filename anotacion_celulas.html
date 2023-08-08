@@ -742,11 +742,11 @@
 <span id="cb14-24"><a href="#cb14-24"></a></span>
 <span id="cb14-25"><a href="#cb14-25"></a>f.markers <span class="sc">%&gt;%</span></span>
 <span id="cb14-26"><a href="#cb14-26"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
-<span id="cb14-27"><a href="#cb14-27"></a>  <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">wt =</span> avg_log2FC) <span class="ot">-&gt;</span> top10</span>
+<span id="cb14-27"><a href="#cb14-27"></a>  <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">5</span>, <span class="at">wt =</span> avg_log2FC) <span class="ot">-&gt;</span> top5</span>
 <span id="cb14-28"><a href="#cb14-28"></a></span>
 <span id="cb14-29"><a href="#cb14-29"></a><span class="co">#so &lt;- ScaleData(so)</span></span>
 <span id="cb14-30"><a href="#cb14-30"></a></span>
-<span id="cb14-31"><a href="#cb14-31"></a><span class="fu">DoHeatmap</span>(so, <span class="at">features =</span> top10<span class="sc">$</span>gene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-31"><a href="#cb14-31"></a><span class="fu">DoHeatmap</span>(so, <span class="at">features =</span> top5<span class="sc">$</span>gene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="tiene-sentido-1" class="slide level2">
