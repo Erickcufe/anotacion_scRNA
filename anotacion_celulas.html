@@ -475,10 +475,10 @@
 <div id="tabset-1-2">
 <p>El objeto <strong>Seurat</strong> se conforma de los siguientes <em>slots</em>:</p>
 <ol type="1">
-<li><strong><span class="citation" data-cites="data">@data</span></strong></li>
-<li><strong><span class="citation" data-cites="meta.data">@meta.data</span></strong></li>
-<li><strong><span class="citation" data-cites="assays">@assays</span></strong></li>
-<li><strong><span class="citation" data-cites="reductions">@reductions</span></strong></li>
+<li><span class="citation" data-cites="data">@data</span></li>
+<li><span class="citation" data-cites="meta.data">@meta.data</span></li>
+<li><span class="citation" data-cites="assays">@assays</span></li>
+<li><span class="citation" data-cites="reductions">@reductions</span></li>
 </ol>
 </div>
 </div>
@@ -545,8 +545,7 @@
 <span id="cb6-4" class="hljs-ln-code"><a href="#cb6-4"></a>pred <span class="ot">&lt;-</span> <span class="fu">SingleR</span>(<span class="at">test =</span> sce,</span>
 <span id="cb6-5" class="hljs-ln-code"><a href="#cb6-5"></a>                <span class="at">ref =</span> ref.data,</span>
 <span id="cb6-6" class="hljs-ln-code"><a href="#cb6-6"></a>                <span class="at">labels =</span> ref.data<span class="sc">$</span>label.main,</span>
-<span id="cb6-7" class="hljs-ln-code"><a href="#cb6-7"></a>                <span class="at">assay.type.test=</span><span class="dv">1</span>)</span>
-<span id="cb6-8" class="hljs-ln-code"><a href="#cb6-8"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7" class="hljs-ln-code"><a href="#cb6-7"></a>                <span class="at">assay.type.test=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="usando-singler-1" class="slide level2 scrollable" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Usando SingleR</h2>
@@ -559,8 +558,7 @@
 <span id="cb7-7" class="hljs-ln-code"><a href="#cb7-7"></a>                <span class="at">assay.type.test=</span><span class="dv">1</span>,</span>
 <span id="cb7-8" class="hljs-ln-code"><a href="#cb7-8"></a>                <span class="at">BPPARAM=</span> BiocParallel<span class="sc">::</span><span class="fu">MulticoreParam</span>(<span class="dv">6</span>)) <span class="co"># 6 CPUs.</span></span>
 <span id="cb7-9" class="hljs-ln-code"><a href="#cb7-9"></a></span>
-<span id="cb7-10" class="hljs-ln-code"><a href="#cb7-10"></a><span class="fu">table</span>(pred<span class="sc">$</span>labels)</span>
-<span id="cb7-11" class="hljs-ln-code"><a href="#cb7-11"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10" class="hljs-ln-code"><a href="#cb7-10"></a><span class="fu">table</span>(pred<span class="sc">$</span>labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Parámetros Principales:</p>
 <ul>
 <li><strong>test</strong>: Una matriz de expresión donde las filas son genes y las columnas son células a anotar.</li>

@@ -28,21 +28,17 @@ Presenta: Erick Cuevas Fernández
 ## Anotación de clusters {.scrollable}
 
 ::: incremental
-
 ```{r, echo=FALSE}
 emo::ji("eye")
 ```
 
- **Algoritmo/método vs Relevancia Biológica** Hay que "campechanearle".
+**Algoritmo/método vs Relevancia Biológica** Hay que "campechanearle".
 
 1.  **Identificación de tipos y Subtipos Celulares.**
 2.  **Entender la función celular.**
 3.  **Descubrimiento de nuevos tipos celulares.**
 4.  **Base para análisis posteriores.**
-
-
 :::
-
 
 ## El problema
 
@@ -84,35 +80,31 @@ so <- CreateSeuratObject(
   project = "Nombre_del_proyecto")
 ```
 
-
 ## Notas de SeuratObject y SingleCellEXperiment Object
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ### SingleCellExperiment
 
-El objeto **SCE** usa la estructura de SummarizedExperiment. Los *slots* extra que tiene son: 
+El objeto **SCE** usa la estructura de SummarizedExperiment. Los *slots* extra que tiene son:
 
-1. **assays**
-2. **colData**
-3. **rowData** 
-4. **reducedDims** 
+1.  **assays**
+2.  **colData**
+3.  **rowData**
+4.  **reducedDims**
 
 ### Seurat
 
-El objeto **Seurat** se conforma de los siguientes *slots*: 
+El objeto **Seurat** se conforma de los siguientes *slots*:
 
-1. **@data**
-2. **@meta.data**
-3. **@assays**
-4. **@reductions**
-
+1.  @data
+2.  @meta.data
+3.  @assays
+4.  @reductions
 :::
 
 ## Importacion de datos {.scrollable}
 
-::: {.r-fit-text}
-
+::: r-fit-text
 Pasamos de SO a SCE
 
 ```{r, eval=FALSE, echo=TRUE}
@@ -137,7 +129,6 @@ sapply(colData(sce)[cluster_cols], nlevels)
 
 
 ```
-
 :::
 
 ## Enfoque automático: a partir de un dataset de referencia {.scrollable}
@@ -173,7 +164,7 @@ rownames(ref.data) <- rowData(ref.data)$geneSymbol
 
 ## Usando SingleR {auto-animate="true"}
 
-```r
+``` r
 library(SingleR)
 library(scater)
 
@@ -182,11 +173,11 @@ pred <- SingleR(test = sce,
                 labels = ref.data$label.main,
                 assay.type.test=1)
 
-
 ```
-## Usando SingleR {auto-animate="true" .scrollable}
 
-```r
+## Usando SingleR {.scrollable auto-animate="true"}
+
+``` r
 library(SingleR)
 library(scater)
 
@@ -198,21 +189,19 @@ pred <- SingleR(test = sce,
 
 table(pred$labels)
 
-
 ```
+
 Parámetros Principales:
 
-*    **test**: Una matriz de expresión donde las filas son genes y las columnas son células a anotar.
-*    **ref**: Una lista de matrices de expresión que representan las bases de datos de referencia.
-*    **labels**: Etiquetas para los tipos celulares en las bases de datos de referencia.
-*    **de.method**: Método para calcular los genes diferencialmente expresados.
-*    **BPPARAM**: Parámetros para la paralelización.
-
+-   **test**: Una matriz de expresión donde las filas son genes y las columnas son células a anotar.
+-   **ref**: Una lista de matrices de expresión que representan las bases de datos de referencia.
+-   **labels**: Etiquetas para los tipos celulares en las bases de datos de referencia.
+-   **de.method**: Método para calcular los genes diferencialmente expresados.
+-   **BPPARAM**: Parámetros para la paralelización.
 
 ## Observar calidad de predicción {.scrollable}
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ### Output de la predicción
 
 ```{r, eval=FALSE, echo=TRUE}
@@ -223,8 +212,6 @@ table(pred$labels)
 head(sort(table(pred$labels), decreasing=TRUE))
 
 ```
-
-
 
 ### Diagnóstico de anotación
 
@@ -276,11 +263,9 @@ plotReducedDim(sce_dummy, "TSNE", colour_by="new_labels")
 ```
 
 ![](img/cluters_pruned.png)
-
 :::
 
-
-## Aproximación "artesanal" 
+## Aproximación "artesanal"
 
 **¿Qué hacemos si nuestra anotación aún no es la "ideal"?**
 
@@ -352,7 +337,6 @@ FeaturePlot(object = so_new, features = "espumosas1", reduction = "tsne")
 
 ![](img/modul.png)
 
-
 ## Cambiamos el nombre de nuestras celulas
 
 ```{r, eval=FALSE, echo=TRUE}
@@ -379,7 +363,6 @@ DimPlot(so, reduction = "umap", group.by = "sample_id")
 ```
 
 ## tSNE
-
 
 ![](img/last_cluster.png)
 
@@ -426,11 +409,9 @@ DoHeatmap(so, features = top10$gene)
 
 ```
 
-
 ## ¿Tiene sentido?
 
 ![](img/final_gra.png)
-
 
 ## ¿Tiene sentido?
 
@@ -438,9 +419,8 @@ DoHeatmap(so, features = top10$gene)
 
 ## Lo que sigue...
 
-1. Expresión diferencial: por condición, región, tejido, entre tipos celulares, sexo, etc.
-2. Análisis de trayectoria: monocle3.
-
+1.  Expresión diferencial: por condición, región, tejido, entre tipos celulares, sexo, etc.
+2.  Análisis de trayectoria: monocle3.
 
 ## El fin
 
