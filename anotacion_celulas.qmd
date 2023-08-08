@@ -25,7 +25,7 @@ Presenta: Erick Cuevas Fernández
 
 ![](img/ccg.png){.absolute top="400" left="200" width="80" height="80"}
 
-## Anotación de clusters
+## Anotación de clusters {.scrollable}
 
 ::: incremental
 1.  **Identificación de tipos y Subtipos Celulares.**
@@ -34,7 +34,7 @@ Presenta: Erick Cuevas Fernández
 4.  **Base para análisis posteriores.**
 :::
 
-![](img/fruit.png)
+![](img/fruit.png){.r-stretch}
 
 ::: footer
 Lisa Maria Steinheuer et al., 2021
@@ -76,11 +76,36 @@ so <- CreateSeuratObject(
   project = "Nombre_del_proyecto")
 ```
 
-## Aproximación "artesanal" {.scrollable}
 
-El dataset listo para lo que sigue lo puedes descargar desde el siguiente link: <https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link>
+## Notas de SeuratObject y SingleCellEXperiment Object
 
-**Primer paso cargar los datos ya pre procesados**
+::: {.panel-tabset}
+
+### SingleCellExperiment
+
+El objeto **SCE** usa la estructura de SummarizedExperiment. Los *slots* extra que tiene son: 
+
+1. **assays**
+2. **colData**
+3. **rowData** 
+4. **reducedDims** 
+
+### Seurat
+
+El objeto **Seurat** se conforma de los siguientes *slots*: 
+
+1. **@data**
+2. **@meta.data**
+3. **@assays**
+4. **@reductions**
+
+:::
+
+## Importacion de datos {.scrollable}
+
+::: {.r-fit-text}
+
+Pasamos de SO a SCE
 
 ```{r, eval=FALSE, echo=TRUE}
 library(Seurat)
@@ -90,6 +115,122 @@ library(SingleCellExperiment)
 
 # Recuerda descargar primero el dataset del link
 so <- readRDS("alsaigh_part2.rds")
+
+# Lo convertimos a sce
+
+sce <- as.SingleCellExperiment(so, assay = "RNA")
+colData(sce) <- as.data.frame(colData(sce)) %>%
+  mutate_if(is.character, as.factor) %>%
+  DataFrame(row.names = colnames(sce))
+
+# Definimos resolucion
+cluster_cols <- grep("res.[0-9]", colnames(colData(sce)), value = TRUE)
+sapply(colData(sce)[cluster_cols], nlevels)
+
+
+```
+
+:::
+
+## Enfoque automático: a partir de un dataset de referencia {.scrollable}
+
+**Dataset de referencia**
+
+```{r, eval=FALSE, echo=TRUE}
+
+# Para anotar
+# cargar datos de referencia con anotaciones de Ensembl.
+library(celldex)
+ref.data <- HumanPrimaryCellAtlasData(ensembl=TRUE)
+
+library(biomaRt)
+library(SummarizedExperiment)
+
+# Seleccione la base de datos Ensembl
+ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
+
+# Extraer los ID de Ensembl del objeto SummarizedExperiment
+ensembl_ids <- rownames(ref.data)
+
+# Obtener los símbolos genéticos correspondientes a los ID de Ensembl
+annotations <- getBM(attributes = c("ensembl_gene_id", "hgnc_symbol"),
+                     filters = "ensembl_gene_id", values = ensembl_ids, mart = ensembl)
+
+# Fusionar anotaciones con rowData del objeto SummarizedExperiment
+rowData(ref.data)$geneSymbol <- annotations$hgnc_symbol[match(ensembl_ids, annotations$ensembl_gene_id)]
+rownames(ref.data) <- rowData(ref.data)$geneSymbol
+
+
+```
+
+## Usando SingleR {auto-animate="true"}
+
+```r
+library(SingleR)
+library(scater)
+
+pred <- SingleR(test = sce,
+                ref = ref.data,
+                labels = ref.data$label.main,
+                assay.type.test=1)
+
+
+```
+## Usando SingleR {auto-animate="true" .scrollable}
+
+```r
+library(SingleR)
+library(scater)
+
+pred <- SingleR(test = sce, 
+                ref = ref.data,
+                labels = ref.data$label.main,
+                assay.type.test=1,
+                BPPARAM= BiocParallel::MulticoreParam(6)) # 6 CPUs.
+
+table(pred$labels)
+
+
+```
+Parámetros Principales:
+
+*    **test**: Una matriz de expresión donde las filas son genes y las columnas son células a anotar.
+*    **ref**: Una lista de matrices de expresión que representan las bases de datos de referencia.
+*    **labels**: Etiquetas para los tipos celulares en las bases de datos de referencia.
+*    **de.method**: Método para calcular los genes diferencialmente expresados.
+*    **BPPARAM**: Parámetros para la paralelización.
+
+
+## Observar calidad de predicción 
+
+::: {.panel-tabset}
+
+### Output de la predicción
+
+```{r}
+colnames(pred)
+
+head(sort(table(pred$labels), decreasing=TRUE))
+
+
+```
+
+
+### Tab B
+
+Content for `Tab B`
+
+:::
+
+
+## Aproximación "artesanal" {.scrollable}
+
+El dataset listo para lo que sigue lo puedes descargar desde el siguiente link: <https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link>
+
+**Primer paso cargar los datos ya pre procesados**
+
+```{r, eval=FALSE, echo=TRUE}
+
 
 #Definimos la resolucion/ numero de clusters 
 # cluster_cols <- grep("res.[0-9]", colnames(colData(sce)), value = TRUE)
@@ -143,9 +284,7 @@ so.renamed <- RenameIdents(dummy_neuron, `0` = "Ex", `1` = "Ex", `2` = "Pv",
 
 ```
 
-## Enfoque automatico: a partir de un dataset de referencia {.scrollable}
 
-SingleR
 
 ## Enfoque mixto {.scrollable}
 
