@@ -40,6 +40,11 @@ Presenta: Erick Cuevas Fernández
 Lisa Maria Steinheuer et al., 2021
 :::
 
+
+## El problema
+
+![](img/at.jpg)
+
 ## Conjunto de datos a trabajar
 
 [Tom Alsaigh et al. 2022](https://www.nature.com/articles/s42003-022-04056-7)
