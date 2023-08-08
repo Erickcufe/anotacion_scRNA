@@ -201,60 +201,120 @@ Parámetros Principales:
 *    **BPPARAM**: Parámetros para la paralelización.
 
 
-## Observar calidad de predicción 
+## Observar calidad de predicción {.scrollable}
 
 ::: {.panel-tabset}
 
 ### Output de la predicción
 
-```{r}
+```{r, eval=FALSE, echo=TRUE}
 colnames(pred)
 
-head(sort(table(pred$labels), decreasing=TRUE))
+table(pred$labels)
 
+head(sort(table(pred$labels), decreasing=TRUE))
 
 ```
 
 
-### Tab B
 
-Content for `Tab B`
+### Diagnóstico de anotación
+
+```{r, eval=FALSE, echo=TRUE}
+
+SingleR::plotScoreHeatmap(pred)
+
+
+```
+
+![](img/alsaigh_plotScoreHeatmap.jpeg)
+
+### Sin podado de etiquetas {.scrollable}
+
+```{r, eval=FALSE, echo=TRUE}
+table(pred$labels)
+
+sce$ProbLabels <- pred$labels
+
+plotReducedDim(sce, "TSNE", colour_by="ProbLabels")
+
+```
+
+![](cluster_v1.png)
+
+### Podado de etiquetas {.scrollable}
+
+```{r, eval=FALSE, echo=TRUE}
+summary(is.na(pred$pruned.labels))
+
+
+# Grafico para ver las celulas eliminadas
+
+# plotDeltaDistribution(pred.grun, ncol = 3)
+
+to.remove <- is.na(pred$pruned.labels)
+table(Label=pred$labels, Removed=to.remove)
+
+to.remove <- pruneScores(pred, min.diff.med=0.2)
+table(Label=pred$labels, Removed=to.remove)
+
+# Modificamos nuestro sce
+sce_dummy <- sce[,to.remove]
+sce_dummy$new_labels <- pred$labels[to.remove]
+table(sce_dummy$new_labels)
+
+plotReducedDim(sce_dummy, "TSNE", colour_by="new_labels")
+
+```
+
+![](img/cluters_pruned.png)
 
 :::
 
 
-## Aproximación "artesanal" {.scrollable}
+## Aproximación "artesanal" 
 
-El dataset listo para lo que sigue lo puedes descargar desde el siguiente link: <https://drive.google.com/file/d/1HbJ0syxTcxkI1aG6dIQ6hkJ7SrLHCLfl/view?usp=drive_link>
+**¿Qué hacemos si nuestra anotación aún no es la "ideal"?**
 
-**Primer paso cargar los datos ya pre procesados**
+![](img/arte.jpeg)
+
+## Podemos primero eliminar {.scrollable}
+
+Ver que tipos celulares son "innecesarios"
 
 ```{r, eval=FALSE, echo=TRUE}
+library(Seurat)
 
+# Recuerda que el archivo original era un "so"
 
-#Definimos la resolucion/ numero de clusters 
-# cluster_cols <- grep("res.[0-9]", colnames(colData(sce)), value = TRUE)
-# sapply(colData(sce)[cluster_cols], nlevels)
+so@meta.data$Proplabels <- sce$ProbLabels
 
-so <- SetIdent(so, value = "integrated_snn_res.0.1")
-so@meta.data$cluster_id <- Idents(so)
+# Le transferimos las etiquetas al objeto Seurat
+Idents(so) <- so$Proplabels
 
-# Aqui podemos ver la cantidad de clusters por resolución
-(n_cells <- table(so$cluster_id, so$sample_id))
+table(Idents(so))
 
-# A partir de este paso podemos encontrar los genes mas variables de cada cluster para poder anotarlos a partir de ese método
+# Eliminamos los tipos celulares con menos de 350 OJO solo para este ejemplo
 
-# f.markers <- FindAllMarkers(so.renamed, min.pct = 0.25, logfc.threshold = 0.25)
+`%!in%` <- Negate(`%in%`)
 
-# f.markers %>%
-#   group_by(cluster) %>%
-#   top_n(n = 10, wt = avg_log2FC) -> top10
+so <- subset(so, (Proplabels %!in% c("Pro-Myelocyte", "MEP", "Pro-B_cell_CD34+", "Pro-B_cell_CD34+", "HSC_-G-CSF", "Hepatocytes", "MSC","Osteoblasts","HSC_CD34+","Erythroblast", "Pre-B_cell_CD34-","GMP","Neutrophils","CMP","DC")))
 
-# DoHeatmap(so, features = top10$gene) +
-#   theme(text = element_text(size = 18))
+table(Idents(so))
 
+# Observamos nuestros clusters
+
+DimPlot(so, reduction = "tsne")
 
 ```
+
+## Ahora se ven asi nuestro clusters
+
+![](cluster_v2.png)
+
+## ¿Y si quiero agregar un tipo celular basado en genes marcadores?
+
+![](img/aguacate.jpg)
 
 ## Observar los marcadores {.scrollable}
 
