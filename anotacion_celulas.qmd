@@ -28,16 +28,19 @@ Presenta: Erick Cuevas Fernández
 ## Anotación de clusters {.scrollable}
 
 ::: incremental
+
+```{r, echo=FALSE}
+emo::ji("eye")
+```
+
+ **Algoritmo/método vs Relevancia Biológica** Hay que "campechanearle".
+
 1.  **Identificación de tipos y Subtipos Celulares.**
 2.  **Entender la función celular.**
 3.  **Descubrimiento de nuevos tipos celulares.**
 4.  **Base para análisis posteriores.**
-:::
 
-![](img/fruit.png){.r-stretch}
 
-::: footer
-Lisa Maria Steinheuer et al., 2021
 :::
 
 
