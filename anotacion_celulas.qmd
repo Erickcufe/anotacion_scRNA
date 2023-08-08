@@ -55,7 +55,11 @@ emo::ji("eye")
 
 :::
 
-## El problema
+## Anclas con Seurat
+
+![](img/fx1_lrg.jpg)
+
+## El problema con el que trabajaremos
 
 ![](img/at.jpg)
 
