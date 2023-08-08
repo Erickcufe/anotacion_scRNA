@@ -365,11 +365,19 @@ so$new_cells <- new_cells
 Idents(so) <- so$new_cells
 
 DimPlot(so, reduction = "tsne")
+DimPlot(so, reduction = "umap")
+DimPlot(so, reduction = "umap", group.by = "region")
+DimPlot(so, reduction = "umap", group.by = "sample_id")
 ```
 
-## Voalá
+## tSNE
+
 
 ![](img/last_cluster.png)
+
+## UMAP
+
+![](img/umap_plot.png)
 
 ## ¿Tiene sentido? {.scrollable}
 

@@ -706,13 +706,20 @@
 <span id="cb13-14"><a href="#cb13-14"></a>so<span class="sc">$</span>new_cells <span class="ot">&lt;-</span> new_cells</span>
 <span id="cb13-15"><a href="#cb13-15"></a><span class="fu">Idents</span>(so) <span class="ot">&lt;-</span> so<span class="sc">$</span>new_cells</span>
 <span id="cb13-16"><a href="#cb13-16"></a></span>
-<span id="cb13-17"><a href="#cb13-17"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"tsne"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"tsne"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"umap"</span>, <span class="at">group.by =</span> <span class="st">"region"</span>)</span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="fu">DimPlot</span>(so, <span class="at">reduction =</span> <span class="st">"umap"</span>, <span class="at">group.by =</span> <span class="st">"sample_id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="voalá" class="slide level2">
-<h2>Voalá</h2>
+<section id="tsne" class="slide level2">
+<h2>tSNE</h2>
 
 <img data-src="img/last_cluster.png" class="r-stretch"></section>
+<section id="umap" class="slide level2">
+<h2>UMAP</h2>
+
+<img data-src="img/umap_plot.png" class="r-stretch"></section>
 <section id="tiene-sentido" class="slide level2 scrollable">
 <h2>¿Tiene sentido?</h2>
 <div class="cell">
